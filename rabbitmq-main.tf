@@ -15,6 +15,7 @@ data ignition_config rabbitmq
     systemd =
     [
         "${data.ignition_systemd_unit.etcd3.id}",
+        "${data.ignition_systemd_unit.fluentd.id}",
         "${data.ignition_systemd_unit.rabbitmq.id}"
     ]
 }
@@ -31,6 +32,21 @@ data ignition_systemd_unit rabbitmq
 {
     name = "rabbitmq.service"
     content = "${ data.template_file.rabbitmq.rendered }"
+    enabled = "true"
+}
+
+
+/*
+ | --
+ | -- This slice of the ignition configuration deals with the
+ | -- systemd service. Once rendered it is then placed alongside
+ | -- the other ignition configuration blocks in ignition_config
+ | --
+*/
+data ignition_systemd_unit fluentd
+{
+    name = "fluentd.service"
+    content = "${ data.template_file.fluentd.rendered }"
     enabled = "true"
 }
 
@@ -77,6 +93,19 @@ data template_file rabbitmq
         rbmq_username = "${ var.in_rmq_username }"
         rbmq_password = "${ random_string.password.result }"
     }
+}
+
+
+/*
+ | --
+ | -- This systemd unit file represents a fluentd docker logging
+ | -- container destination that is run alongside and is ready to
+ | -- receive logs from RabbitMQ using docker's log driver.
+ | --
+*/
+data template_file fluentd
+{
+    template = "${ file( "${path.module}/systemd-fluentd.service" ) }"
 }
 
 
