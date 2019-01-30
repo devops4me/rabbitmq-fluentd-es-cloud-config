@@ -106,6 +106,12 @@ data template_file rabbitmq
 data template_file fluentd
 {
     template = "${ file( "${path.module}/systemd-fluentd.service" ) }"
+    vars
+    {
+        elasticsearch_url = "${ var.in_elasticsearch_url }"
+        s3_logs_bucket_name = "${ var.in_s3_logs_bucket_name }"
+        s3_bucket_region = "${ var.in_s3_bucket_region }"
+    }
 }
 
 
