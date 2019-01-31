@@ -8,7 +8,7 @@ Requires=docker.socket etcd-member.service
 ExecStart=/usr/bin/docker run \
     --detach                  \
     --name rabbitmq           \
-    --network host            \
+    --net=host            \
     --log-driver fluentd      \
     --log-opt fluentd-address=localhost:24224         \
     --env RABBITMQ_ERLANG_COOKIE="${ erlang_cookie }" \
