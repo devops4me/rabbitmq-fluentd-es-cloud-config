@@ -1,16 +1,16 @@
 
 [Unit]
 Description=RabbitMQ Node with ETCD Peer Discovery
-After=etcd-member.service docker.socket
-Requires=docker.socket etcd-member.service
+After=fluentd.service
+Requires=fluentd.service
 
 [Service]
 ExecStart=/usr/bin/docker run \
     --detach                  \
     --name rabbitmq           \
-    --net=host            \
+    --network host            \
     --log-driver fluentd      \
-    --log-opt fluentd-address=localhost:24224         \
+    --log-opt fluentd-address=fluentd-logs:24224      \
     --env RABBITMQ_ERLANG_COOKIE="${ erlang_cookie }" \
     --env RABBITMQ_DEFAULT_USER="${ rbmq_username }"  \
     --env RABBITMQ_DEFAULT_PASS="${ rbmq_password }"  \
