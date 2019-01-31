@@ -8,6 +8,7 @@ Requires=etcd-member.service
 ExecStart=/usr/bin/docker run                           \
     --detach                                            \
     --name fluentd-logs                                 \
+    --network host            \
     --publish 24224:24224                               \
     --env FLUENTD_CONF=fluentd-elasticsearch-s3.conf    \
     --env ELASTICSEARCH_HOSTNAME=${ elasticsearch_url } \
