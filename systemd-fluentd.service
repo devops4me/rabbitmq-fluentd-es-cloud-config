@@ -5,16 +5,16 @@ After=etcd-member.service
 Requires=etcd-member.service
 
 [Service]
-ExecStart=/usr/bin/docker run                           \
-    --detach                                            \
-    --name fluentd-logs                                 \
-    --publish 24224:24224                               \
-    --env FLUENTD_CONF=fluentd-elasticsearch-s3.conf    \
-    --env ELASTICSEARCH_HOSTNAME=${ elasticsearch_url } \
-    --env ELASTICSEARCH_PORT=80                         \
-    --env ELASTICSEARCH_SCHEME=http                     \
-    --env S3_BUCKET_NAME=${ s3_logs_bucket_name }       \
-    --env S3_BUCKET_REGION=${ s3_bucket_region }        \
+ExecStart=/usr/bin/docker run                         \
+    --detach                                          \
+    --name fluentd-logs                               \
+    --publish 24224:24224                             \
+    --env FLUENTD_CONF=fluentd-elasticsearch-s3.conf  \
+    --env ELASTICSEARCH_HOSTNAME=${elasticsearch_url} \
+    --env ELASTICSEARCH_PORT=80                       \
+    --env ELASTICSEARCH_SCHEME=http                   \
+    --env S3_BUCKET_NAME=${s3_logs_bucket_name}       \
+    --env S3_BUCKET_REGION=${s3_bucket_region}        \
     devops4me/fluentd
 
 [Install]
